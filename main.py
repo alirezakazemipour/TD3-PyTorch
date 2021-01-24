@@ -1,6 +1,7 @@
 import gym
 from common import get_params
 from brain import Agent
+import psutil
 
 if __name__ == "__main__":
     params = get_params()
@@ -10,15 +11,20 @@ if __name__ == "__main__":
     params.update({"action_bounds": [env.action_space.low[0], env.action_space.high[0]]})
     params.update({"max_episode_steps": env.spec.max_episode_steps})
     params.update({"max_episodes": params["max_steps"] // params["max_episode_steps"]})
+    print("params:", params)
 
     agent = Agent(**params)
+    to_gb = lambda in_bytes: in_bytes / 1024 / 1024 / 1024
 
+    explore_steps = 0
+    running_reward = 0
     for episode in range(1, 1 + params["max_episodes"]):
         state = env.reset()
-
+        episode_reward = 0
         for step in range(1, 1 + params["max_episode_steps"]):
-            if episode * step <= params["pure_explore_steps"]:
+            if explore_steps <= params["pure_explore_steps"]:
                 action = env.action_space.sample()
+                explore_steps += 1
             else:
                 action = agent.choose_action(state)
 
@@ -26,7 +32,18 @@ if __name__ == "__main__":
             agent.store(state, action, reward, done, next_state)
             agent.train()
 
+            episode_reward += reward
             if done:
                 break
-
             state = next_state
+
+        if episode == 1:
+            running_reward = episode_reward
+        else:
+            running_reward = 0.99 * running_reward + 0.01 * episode_reward
+
+        ram = psutil.virtual_memory()
+        print(f"E: {episode}| "
+              f"Reward: {episode_reward:.2f}| "
+              f"Running_Reward: {running_reward:.2f}| "
+              f"{to_gb(ram.used):.1f}/{to_gb(ram.total):.1f} GB RAM")

@@ -4,9 +4,9 @@ import argparse
 def get_params():
     parser = argparse.ArgumentParser(
         description="Variable parameters based on the configuration of the machine or user's choice")
-    parser.add_argument("--algo", default="rainbow", type=str,
+    parser.add_argument("--algo", default="TD3", type=str,
                         help="The algorithm which is used to train the agent.")
-    parser.add_argument("--mem_size", default=55000, type=int, help="The memory size.")
+    parser.add_argument("--mem_size", default=20000, type=int, help="The memory size.")
     parser.add_argument("--env_name", default="Pendulum-v0", type=str, help="Name of the environment.")
     parser.add_argument("--interval", default=10, type=int,
                         help="The interval specifies how often different parameters should be saved and printed,"
@@ -23,25 +23,15 @@ def get_params():
 
     #  Parameters based on the TD3 paper
     # region default parameters
-    default_params = {"lr": 6.25e-5,
-                      "n_step": 3,
+    default_params = {"lr": 1e-3,
+                      "policy_update_period": 2,
+                      "pure_explore_steps": 1000,
                       "batch_size": 100,
-                      "state_shape": (84, 84, 4),
                       "max_steps": int(1e+6),
                       "gamma": 0.99,
-                      "tau": 0.001,
-                      "train_period": 4,
-                      "v_min": -10,
-                      "v_max": 10,
-                      "n_atoms": 51,
-                      "adam_eps": 1.5e-4,
-                      "alpha": 0.5,
-                      "beta": 0.4,
-                      "clip_grad_norm": 10.0,
-                      "final_annealing_beta_steps": int(1e+6),
-                      "initial_mem_size_to_train": 1000
+                      "tau": 0.005,
                       }
     # endregion
     total_params = {**vars(parser_params), **default_params}
-    # print("params:", total_params)
+
     return total_params
