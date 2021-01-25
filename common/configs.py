@@ -27,7 +27,7 @@ def get_params():
                       "policy_update_period": 2,
                       "pure_explore_steps": 1000,
                       "batch_size": 100,
-                      "max_steps": int(1e+6),
+                      "max_steps": int(1e+5),
                       "gamma": 0.99,
                       "tau": 0.005,
                       }

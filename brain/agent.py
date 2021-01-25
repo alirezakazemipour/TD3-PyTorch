@@ -32,14 +32,18 @@ class Agent:
 
         self.train_counter = 0
 
-    def choose_action(self, state):
+    def choose_action(self, state, eval=False):
         state = np.expand_dims(state, 0)
         state = from_numpy(state).float().to(self.device)
         with torch.no_grad():
             actions = self.policy(state)
-        exp_noise = np.random.normal(scale=0.1, size=self.config["n_actions"])
+        actions = actions.cpu().numpy()
 
-        actions = (actions.cpu().numpy() + exp_noise) * self.config["action_bounds"][1]
+        if not eval:
+            exp_noise = np.random.normal(scale=0.1, size=self.config["n_actions"])
+            actions = actions + exp_noise
+
+        actions = actions * self.config["action_bounds"][1]
         return np.clip(actions, self.config["action_bounds"][0], self.config["action_bounds"][1]).squeeze(0)
 
     def store(self, state, action, reward, done, next_state):
@@ -113,3 +117,10 @@ class Agent:
         for target_param, online_param in zip(target_net.parameters(), online_net.parameters()):
             target_param.data.copy_(target_param.data * (1 - tau) + online_param * tau)
         target_net.eval()
+
+    def save_weights(self):
+        torch.save(self.policy.state_dict(), "weights.pth")
+
+    def load_weights(self):
+        self.policy.load_state_dict(torch.load("weights.pth"))
+        self.policy.eval()
