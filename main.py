@@ -5,6 +5,11 @@ import psutil
 from torch.utils.tensorboard import SummaryWriter
 import time
 import mujoco_py
+from mujoco_py.generated import const
+from mujoco_py import GlfwContext
+import cv2
+
+GlfwContext(offscreen=True)
 
 if __name__ == "__main__":
     params = get_params()
@@ -61,16 +66,25 @@ if __name__ == "__main__":
 
     else:
         agent.load_weights()
-        #env = gym.wrappers.Monitor(env, "./vid", video_callable=lambda episode_id: True, force=True)
+        # env = gym.wrappers.Monitor(env, "./vid", video_callable=lambda episode_id: True, force=True)
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        VideoWriter = cv2.VideoWriter(params["env_name"] + ".avi", fourcc, 50.0, (250, 250))
         state = env.reset()
         done = False
         episode_reward = 0
         while not done:
             action = agent.choose_action(state, eval=True)
             next_state, reward, done, _ = env.step(action)
-            env.render()
-            #time.sleep(0.01)
+            I = env.render(mode='rgb_array')
+            I = cv2.cvtColor(I, cv2.COLOR_RGB2BGR)
+            I = cv2.resize(I, (250, 250))
+            VideoWriter.write(I)
+            cv2.imshow("env", I)
+            cv2.waitKey(10)
             episode_reward += reward
             state = next_state
 
         print(f"Episode reward: {episode_reward: .1f}")
+        env.close()
+        VideoWriter.release()
+        cv2.destroyAllWindows()
