@@ -61,7 +61,7 @@ if __name__ == "__main__":
 
     else:
         agent.load_weights()
-        env = gym.wrappers.Monitor(env, "./vid", video_callable=lambda episode_id: True, force=True)
+        #env = gym.wrappers.Monitor(env, "./vid", video_callable=lambda episode_id: True, force=True)
         state = env.reset()
         done = False
         episode_reward = 0
@@ -69,7 +69,7 @@ if __name__ == "__main__":
             action = agent.choose_action(state, eval=True)
             next_state, reward, done, _ = env.step(action)
             env.render()
-            time.sleep(0.01)
+            #time.sleep(0.01)
             episode_reward += reward
             state = next_state
 
