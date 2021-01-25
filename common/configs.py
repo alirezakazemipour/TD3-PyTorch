@@ -25,9 +25,9 @@ def get_params():
     # region default parameters
     default_params = {"lr": 1e-3,
                       "policy_update_period": 2,
-                      "pure_explore_steps": 10000,
+                      "pure_explore_steps": 1000,
                       "batch_size": 100,
-                      "max_steps": int(1e+6),
+                      "max_steps": int(1e+7),
                       "gamma": 0.99,
                       "tau": 0.005,
                       }
