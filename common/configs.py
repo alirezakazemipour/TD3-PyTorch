@@ -7,7 +7,7 @@ def get_params():
     parser.add_argument("--algo", default="TD3", type=str,
                         help="The algorithm which is used to train the agent.")
     parser.add_argument("--mem_size", default=20000, type=int, help="The memory size.")
-    parser.add_argument("--env_name", default="Pendulum-v0", type=str, help="Name of the environment.")
+    parser.add_argument("--env_name", default="Ant-v2", type=str, help="Name of the environment.")
     parser.add_argument("--interval", default=10, type=int,
                         help="The interval specifies how often different parameters should be saved and printed,"
                              " counted by episodes.")

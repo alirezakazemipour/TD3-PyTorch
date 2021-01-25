@@ -4,6 +4,7 @@ from brain import Agent
 import psutil
 from torch.utils.tensorboard import SummaryWriter
 import time
+import mujoco_py
 
 if __name__ == "__main__":
     params = get_params()
