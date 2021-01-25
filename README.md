@@ -53,7 +53,7 @@ optional arguments:
 ```shell
 python3 main.py --mem_size=700000 --env_name="Ant-v2"
 ```
-- Use `do_train` flag to change the mode from  _training_ mode to _testing_.
+- Use `do_train` flag to change the mode from  _training_ to _testing_.
 ```shell
 python3 main.py --env_name="Ant-v2" --do_train # <- Test the agent
 ```
