@@ -43,7 +43,7 @@ class Agent:
             exp_noise = np.random.normal(scale=0.1, size=self.config["n_actions"])
             actions = actions + exp_noise
 
-        actions = actions * self.config["action_bounds"][1]
+        actions *= self.config["action_bounds"][1]
         return np.clip(actions, self.config["action_bounds"][0], self.config["action_bounds"][1]).squeeze(0)
 
     def store(self, state, action, reward, done, next_state):
