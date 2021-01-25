@@ -46,4 +46,5 @@ if __name__ == "__main__":
         print(f"E: {episode}| "
               f"Reward: {episode_reward:.2f}| "
               f"Running_Reward: {running_reward:.2f}| "
+              f"Memory length: {len(agent.memory)}| "
               f"{to_gb(ram.used):.1f}/{to_gb(ram.total):.1f} GB RAM")

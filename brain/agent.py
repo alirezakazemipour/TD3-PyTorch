@@ -111,6 +111,5 @@ class Agent:
     @staticmethod
     def soft_copy_target_nets(online_net, target_net, tau):
         for target_param, online_param in zip(target_net.parameters(), online_net.parameters()):
-            target_param.data.copy_(target_param.data * tau + online_param * (1 - tau))
-
+            target_param.data.copy_(target_param.data * (1 - tau) + online_param * tau)
         target_net.eval()
