@@ -51,11 +51,11 @@ optional arguments:
 ```
 - **In order to train the agent with default arguments , execute the following command** (You may change the memory capacity and the environment based on your desire.):
 ```shell
-python3 main.py --mem_size=700000 --env_name="Ant-v2"
+python3 main.py --mem_size=700000 --env_name="Ant-v2" --do_train
 ```
-- Use `do_train` flag to change the mode from  _training_ to _testing_.
+- Remove `do_train` flag to change the mode from  _training_ to _testing_.
 ```shell
-python3 main.py --env_name="Ant-v2" --do_train # <- Test the agent
+python3 main.py --env_name="Ant-v2" # <- Test the agent
 ```
 
 ## References
